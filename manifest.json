@@ -1,0 +1,14 @@
+{
+    "manifest_version": 2,
+    "name": "Chrome Bookmarks JSON",
+    "description": "Allows import/export of bookmarks at any level via JSON",
+    "version": "1.0.0",
+    "permissions": [
+        "bookmarks"
+    ],
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_popup": "popup.html",
+        "default_title": "Chrome Bookmarks JSON"
+    }
+}
