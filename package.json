@@ -1,0 +1,40 @@
+{
+  "name": "chrome-bookmarks-json",
+  "version": "1.0.0",
+  "description": "Chrome Bookmarks JSON",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "mkdir -p dist",
+    "build": "run-p build:*",
+    "watch": "run-p watch:*",
+    "build:css": "cp src/*.css dist/",
+    "watch:css": "onchange -i src/**/*.css -- npm run build:css",
+    "build:elm": "elm make src/Main.elm --output=dist/bundle.elm.js",
+    "watch:elm": "onchange -i src/**/*.elm -- npm run build:elm",
+    "build:html": "cp src/*.html dist/",
+    "watch:html": "onchange -i src/**/*.html -- npm run build:html",
+    "build:js": "webpack && cp src/background.js dist/",
+    "watch:js": "onchange -i src/**/*.js -- npm run build:js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dougflip/chrome-bookmarks-json.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dougflip/chrome-bookmarks-json/issues"
+  },
+  "dependencies": {
+    "babel-core": "^6.13.2",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.13.2",
+    "npm-run-all": "^3.0.0",
+    "webpack": "^1.13.2"
+  },
+  "devDependencies": {
+    "onchange": "^2.5.0"
+  },
+  "homepage": "https://github.com/dougflip/chrome-bookmarks-json#readme"
+}

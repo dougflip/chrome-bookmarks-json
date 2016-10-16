@@ -11,13 +11,30 @@ This allows everyone to share the same set of bookmarks and keep them versioned 
 
 This extension is general purpose though and could be used to just share "chunks" of bookmarks as JSON.
 
-## Steps to Install
+## Required Software
 
-1. Clone this repo
+1. Install latest stable Node - [nvm](https://github.com/creationix/nvm) is good for this.
+1. `npm install -g elm` - install Elm (0.17)
+
+## Building
+
+```
+npm install
+npm run build
+```
+
+For development you can alternatively use
+
+```
+npm run watch
+```
+
+## Installing (as Chrome extension)
+
 1. Open Chrome and go to [chrome://extensions/](chrome://extensions/)
 1. Check the "Developer Mode" checkbox in the top right
 1. Click the "Load unpacked extension" button
-1. Select the dir you cloned into from step 1
+1. Select this directory
 
 ## Bookmarks.json
 

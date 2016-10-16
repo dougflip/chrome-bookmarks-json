@@ -1,4 +1,4 @@
-const extUrl = `chrome-extension://${location.host}/src/index.html`;
+const extUrl = `chrome-extension://${location.host}/dist/index.html`;
 
 const findExtTabOrNull = allTabs => allTabs.find(x => x.url === extUrl);
 

@@ -8,22 +8,9 @@
 </head>
 
 <body class="bookmarks-body">
-    <div class="wrapper">
-        <div class="error-message">
-            <div class="error-message-text"></div>
-            <button class="error-message-close">&times;</button>
-        </div>
-        <section class="instructions">
-            <p>1. Use the links to navigate to the folder where you want to import.</p>
-            <p>2. Input JSON into the text field and click "create" to create the bookmarks.</p>
-        </section>
-        <section class="bookmarks"></section>
-        <section class="json-paste-wrapper">
-            <textarea class="json-textarea" rows="8" cols="40" placeholder="paste json here"></textarea>
-            <button class="submit-json">create</button>
-        </section>
-    </div>
-    <script src="index.js"></script>
+    <div id="main"></div>
+    <script src="bundle.elm.js"></script>
+    <script src="bundle.js"></script>
 </body>
 
 </html>

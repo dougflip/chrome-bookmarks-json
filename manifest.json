@@ -11,6 +11,6 @@
         "default_icon": "icon.png"
     },
     "background": {
-        "scripts": ["src/background.js"]
+        "scripts": ["dist/background.js"]
     }
 }
