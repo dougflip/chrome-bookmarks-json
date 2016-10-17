@@ -24,13 +24,17 @@ type alias Model =
     { bookmarks: List Bookmark }
 
 type Msg
-    = BookmarkResult (List Bookmark)
+    = GetBookmarks String
+    | BookmarkResult (List Bookmark)
 
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
   case msg of
+    GetBookmarks id -> (model, getBookmarks id)
     BookmarkResult bs -> (Model bs, Cmd.none)
+
+port getBookmarks : String -> Cmd msg
 
 port bookmarks : (List Bookmark -> msg) -> Sub msg
 
@@ -48,5 +52,7 @@ view model =
 
 renderBookmark : Bookmark -> Html Msg
 renderBookmark b =
-    let cssClass = if b.isFolder then "is-dir" else "is-link"
-    in div [] [a [class cssClass] [text b.title]]
+    if b.isFolder then
+        div [] [a [class "is-dir", onClick (GetBookmarks b.id)] [text b.title]]
+    else
+        div [] [a [class "is-link"] [text b.title]]
