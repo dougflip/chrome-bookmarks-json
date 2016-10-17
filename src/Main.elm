@@ -15,28 +15,31 @@ main =
     }
 
 init : (Model, Cmd Msg)
-init = (Model [], Cmd.none)
+init = (Model Nothing "0" [], Cmd.none)
 
 type alias Bookmark =
     { id: String, title: String, isFolder: Bool }
 
 type alias Model =
-    { bookmarks: List Bookmark }
+    { parentId: Maybe String
+    , currentRootId: String
+    , bookmarks: List Bookmark
+    }
 
 type Msg
     = GetBookmarks String
-    | BookmarkResult (List Bookmark)
+    | BookmarkResult Model
 
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
   case msg of
     GetBookmarks id -> (model, getBookmarks id)
-    BookmarkResult bs -> (Model bs, Cmd.none)
+    BookmarkResult model -> (model, Cmd.none)
 
 port getBookmarks : String -> Cmd msg
 
-port bookmarks : (List Bookmark -> msg) -> Sub msg
+port bookmarks : (Model -> msg) -> Sub msg
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
@@ -46,12 +49,18 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
   div [class "wrapper"]
-    [
-        div [] (List.map renderBookmark model.bookmarks)
+    [ viewBackButtonOrEmpty model
+    , div [] (List.map viewBookmark model.bookmarks)
     ]
 
-renderBookmark : Bookmark -> Html Msg
-renderBookmark b =
+viewBackButtonOrEmpty : Model -> Html Msg
+viewBackButtonOrEmpty model =
+    case model.parentId of
+        Nothing -> text ""
+        Just parentId -> button [class "back-button", onClick (GetBookmarks parentId)] [text "< Back"]
+
+viewBookmark : Bookmark -> Html Msg
+viewBookmark b =
     if b.isFolder then
         div [] [a [class "is-dir", onClick (GetBookmarks b.id)] [text b.title]]
     else
