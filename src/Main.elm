@@ -4,7 +4,6 @@ import Html exposing (..)
 import Html.App as App
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import String
 
 main =
   App.program
@@ -27,14 +26,14 @@ type alias Model =
     }
 
 type Msg
-    = GetBookmarks String
+    = FetchBookmarks String
     | BookmarkResult Model
 
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
   case msg of
-    GetBookmarks id -> (model, getBookmarks id)
+    FetchBookmarks id -> (model, getBookmarks id)
     BookmarkResult model -> (model, Cmd.none)
 
 port getBookmarks : String -> Cmd msg
@@ -57,11 +56,11 @@ viewBackButtonOrEmpty : Model -> Html Msg
 viewBackButtonOrEmpty model =
     case model.parentId of
         Nothing -> text ""
-        Just parentId -> button [class "back-button", onClick (GetBookmarks parentId)] [text "< Back"]
+        Just parentId -> button [class "back-button", onClick (FetchBookmarks parentId)] [text "< Back"]
 
 viewBookmark : Bookmark -> Html Msg
 viewBookmark b =
     if b.isFolder then
-        div [] [a [class "is-dir", onClick (GetBookmarks b.id)] [text b.title]]
+        div [] [a [class "is-dir", onClick (FetchBookmarks b.id)] [text b.title]]
     else
         div [] [a [class "is-link"] [text b.title]]
