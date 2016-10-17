@@ -6,6 +6,7 @@
     "scripts": {
         "postinstall": "mkdir -p dist",
         "build": "run-p build:*",
+        "build:css": "cp src/*.css dist/",
         "build:elm": "elm make src/Main.elm --output=dist/main.js",
         "build:html": "cp src/*.html dist/",
         "build:js": "cp src/*.js dist/"
