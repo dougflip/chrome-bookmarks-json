@@ -1,32 +1,36 @@
 {
-    "name": "chrome-bookmarks-json",
-    "version": "1.0.0",
-    "description": "Chrome Bookmarks JSON ==================================",
-    "main": "index.js",
-    "scripts": {
-        "postinstall": "mkdir -p dist",
-        "build": "run-p build:*",
-        "build:css": "cp src/*.css dist/",
-        "build:elm": "elm make src/Main.elm --output=dist/main.js",
-        "build:html": "cp src/*.html dist/",
-        "build:js": "cp src/*.js dist/"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/dougflip/chrome-bookmarks-json.git"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/dougflip/chrome-bookmarks-json/issues"
-    },
-    "dependencies": {
-        "npm-run-all": "^3.0.0"
-    },
-    "devDependencies": {
-        "onchange": "^2.5.0",
-        "watch": "^0.19.2"
-    },
-    "homepage": "https://github.com/dougflip/chrome-bookmarks-json#readme"
+  "name": "chrome-bookmarks-json",
+  "version": "1.0.0",
+  "description": "Chrome Bookmarks JSON ==================================",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "mkdir -p dist",
+    "build": "run-p build:*",
+    "build:css": "cp src/*.css dist/",
+    "build:elm": "elm make src/Main.elm --output=dist/bundle.elm.js",
+    "build:html": "cp src/*.html dist/",
+    "build:js": "webpack && cp src/background.js dist/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dougflip/chrome-bookmarks-json.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dougflip/chrome-bookmarks-json/issues"
+  },
+  "dependencies": {
+    "babel-core": "^6.13.2",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.13.2",
+    "npm-run-all": "^3.0.0",
+    "webpack": "^1.13.2"
+  },
+  "devDependencies": {
+    "onchange": "^2.5.0",
+    "watch": "^0.19.2"
+  },
+  "homepage": "https://github.com/dougflip/chrome-bookmarks-json#readme"
 }
