@@ -63,11 +63,18 @@ view model =
   div [class "wrapper"]
     [ viewBackButtonOrEmpty model
     , div [] (List.map viewBookmark model.currentItem.children)
-    , div []
-      [ textarea [onInput InputJson, value model.jsonText] []
-      , button [onClick (InsertBookmarks (getInsertBookmarkIOFor model))] [text "add"]
-      ]
+    , viewJsonPasteOrEmpty model
     ]
+
+viewJsonPasteOrEmpty : Model -> Html Msg
+viewJsonPasteOrEmpty model =
+  case model.currentItem.currentRootId of
+    "0" -> text ""
+    otherwise ->
+      div [class "json-paste-wrapper"]
+        [ textarea [class "json-textarea", onInput InputJson, value model.jsonText] []
+        , button [onClick (InsertBookmarks (getInsertBookmarkIOFor model))] [text "add"]
+        ]
 
 viewBackButtonOrEmpty : Model -> Html Msg
 viewBackButtonOrEmpty model =

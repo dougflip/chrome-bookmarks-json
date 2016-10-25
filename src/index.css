@@ -58,11 +58,3 @@
     width: 100%;
     margin-bottom: 5px;
 }
-
-.json-paste-wrapper {
-    display: none;
-}
-
-.json-paste-wrapper.is-shown {
-    display: block;
-}
