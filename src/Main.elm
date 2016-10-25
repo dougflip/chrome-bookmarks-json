@@ -14,22 +14,27 @@ main =
     }
 
 init : (Model, Cmd Msg)
-init = (Model Nothing "0" "" [], Cmd.none)
+init = (Model (BookmarkIO Nothing "0" []) "", Cmd.none)
 
 type alias Bookmark =
     { id: String, title: String, isFolder: Bool }
 
+type alias BookmarkIO =
+  { parentId: Maybe String, currentRootId: String, children: List Bookmark }
+
+type alias InsertBookmarkIO =
+  { parentId: String, json: String }
+
 type alias Model =
-    { parentId: Maybe String
-    , currentRootId: String
+    { currentItem: BookmarkIO
     , jsonText: String
-    , bookmarks: List Bookmark
     }
 
 type Msg
     = InputJson String
     | FetchBookmarks String
-    | BookmarkResult Model
+    | BookmarkResult BookmarkIO
+    | InsertBookmarks InsertBookmarkIO
 
 
 update : Msg -> Model -> (Model, Cmd Msg)
@@ -37,30 +42,36 @@ update msg model =
   case msg of
     InputJson text -> ({ model | jsonText = text}, Cmd.none)
     FetchBookmarks id -> (model, getBookmarks id)
-    BookmarkResult model -> (model, Cmd.none)
+    BookmarkResult bookmarkIO -> ({ model | currentItem = bookmarkIO }, Cmd.none)
+    InsertBookmarks x -> (model, insertBookmarks x)
 
 port getBookmarks : String -> Cmd msg
+port insertBookmarks : InsertBookmarkIO -> Cmd msg
 
-port bookmarks : (Model -> msg) -> Sub msg
+port bookmarks : (BookmarkIO -> msg) -> Sub msg
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
   bookmarks BookmarkResult
 
 
+getInsertBookmarkIOFor : Model -> InsertBookmarkIO
+getInsertBookmarkIOFor model = InsertBookmarkIO model.currentItem.currentRootId model.jsonText
+
 view : Model -> Html Msg
 view model =
   div [class "wrapper"]
     [ viewBackButtonOrEmpty model
-    , div [] (List.map viewBookmark model.bookmarks)
+    , div [] (List.map viewBookmark model.currentItem.children)
     , div []
       [ textarea [onInput InputJson, value model.jsonText] []
+      , button [onClick (InsertBookmarks (getInsertBookmarkIOFor model))] [text "add"]
       ]
     ]
 
 viewBackButtonOrEmpty : Model -> Html Msg
 viewBackButtonOrEmpty model =
-    case model.parentId of
+    case model.currentItem.parentId of
         Nothing -> text ""
         Just parentId -> button [class "back-button", onClick (FetchBookmarks parentId)] [text "< Back"]
 

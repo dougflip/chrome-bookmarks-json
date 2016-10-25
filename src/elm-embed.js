@@ -10,3 +10,7 @@ app.ports.getBookmarks.subscribe(id => {
   chromeBookmarks.getBookmarksFor(id)
     .then(app.ports.bookmarks.send);
 });
+
+app.ports.insertBookmarks.subscribe(({ parentId, json }) => {
+  chromeBookmarks.insertBookmarksFromJson(parentId, json);
+});

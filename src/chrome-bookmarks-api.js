@@ -4,11 +4,11 @@
 *   1. Provides a minimal (and specific) API of the functions actually used
 *   2. Exposes the API as promises for easier consumption
 */
-const convertToBookmarkRecord = node => {
+const convertToBookmarkIO = node => {
   return {
     parentId: node.parentId || null,
     currentRootId: node.id,
-    bookmarks: node.children.map(mapBookmark)
+    children: node.children.map(mapBookmark)
   };
 };
 
@@ -19,7 +19,7 @@ const mapBookmark = x => {
 const getBookmarksFor = id => {
   return new Promise(resolve => chrome.bookmarks.getSubTree(id, resolve))
     .then(xs => xs[0])
-    .then(convertToBookmarkRecord);
+    .then(convertToBookmarkIO);
 }
 
 const insertBookmark = (parentId, { title, url }) => {
@@ -40,7 +40,24 @@ const insertBookmarks = (parentId, links) => {
         .then(() => insertBookmarks(parentId, tail));
 };
 
+// TODO: This is a great candidate to move into Elm land!
+const parseJsonPromise = json => {
+    return new Promise((resolve, reject) => {
+        try {
+            resolve(JSON.parse(json));
+        } catch (err) {
+            reject(`Uh oh, something couldn't parse in your JSON:<br/>${err}`);
+        }
+    });
+};
+
+const insertBookmarksFromJson = (parentId, json) => {
+  return parseJsonPromise(json)
+      .then(data => insertBookmarks(parentId, data))
+      .then(() => getBookmarksFor(parentId));
+};
+
 export default {
   getBookmarksFor,
-  insertBookmarks
+  insertBookmarksFromJson
 };
