@@ -1,7 +1,7 @@
 {
   "name": "chrome-bookmarks-json",
   "version": "1.0.0",
-  "description": "Chrome Bookmarks JSON ==================================",
+  "description": "Chrome Bookmarks JSON",
   "main": "index.js",
   "scripts": {
     "postinstall": "mkdir -p dist",

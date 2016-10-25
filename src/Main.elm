@@ -14,7 +14,7 @@ main =
     }
 
 init : (Model, Cmd Msg)
-init = (Model Nothing "0" [], Cmd.none)
+init = (Model Nothing "0" "" [], Cmd.none)
 
 type alias Bookmark =
     { id: String, title: String, isFolder: Bool }
@@ -22,17 +22,20 @@ type alias Bookmark =
 type alias Model =
     { parentId: Maybe String
     , currentRootId: String
+    , jsonText: String
     , bookmarks: List Bookmark
     }
 
 type Msg
-    = FetchBookmarks String
+    = InputJson String
+    | FetchBookmarks String
     | BookmarkResult Model
 
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
   case msg of
+    InputJson text -> ({ model | jsonText = text}, Cmd.none)
     FetchBookmarks id -> (model, getBookmarks id)
     BookmarkResult model -> (model, Cmd.none)
 
@@ -50,6 +53,9 @@ view model =
   div [class "wrapper"]
     [ viewBackButtonOrEmpty model
     , div [] (List.map viewBookmark model.bookmarks)
+    , div []
+      [ textarea [onInput InputJson, value model.jsonText] []
+      ]
     ]
 
 viewBackButtonOrEmpty : Model -> Html Msg
