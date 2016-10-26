@@ -1,21 +1,24 @@
 import chromeBookmarks from './chrome-bookmarks-api';
 
-var node = document.getElementById('main');
-var app = Elm.Main.embed(node);
+const node = document.getElementById('main');
+const app = Elm.Main.embed(node);
 
-const reportErrorToElm = app => err => app.ports.reportJSError.send(err);
+const sendErrorToElm = app => err => app.ports.reportJSError.send(err);
 
-chromeBookmarks.getBookmarksFor("0")
-  .then(app.ports.bookmarks.send)
-  .catch(reportErrorToElm(app));
-
-app.ports.getBookmarks.subscribe(id => {
-  chromeBookmarks.getBookmarksFor(id)
+const sendBookmarksToElm = id => {
+  return chromeBookmarks.getBookmarksFor(id)
     .then(app.ports.bookmarks.send)
-    .catch(reportErrorToElm(app));
-});
+    .catch(sendErrorToElm(app));
+};
 
-app.ports.insertBookmarks.subscribe(({ parentId, json }) => {
+const createAndSendBookmarksToElm = ({ parentId, json }) => {
   chromeBookmarks.insertBookmarksFromJson(parentId, json)
-    .catch(err => app.ports.reportJSError.send(err));
-});
+    .then(() => sendBookmarksToElm(parentId))
+    .catch(sendErrorToElm(app));
+};
+
+app.ports.getBookmarks.subscribe(sendBookmarksToElm);
+
+app.ports.insertBookmarks.subscribe(createAndSendBookmarksToElm);
+
+sendBookmarksToElm("0");

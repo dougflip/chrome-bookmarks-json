@@ -55,7 +55,6 @@ const parseJsonPromise = json => {
 const insertBookmarksFromJson = (parentId, json) => {
   return parseJsonPromise(json)
       .then(data => insertBookmarks(parentId, data))
-      .then(() => getBookmarksFor(parentId))
       .catch(err => Promise.reject(err || "Sorry! Something went wrong trying to create your bookmarks"));
 };
 
