@@ -19,7 +19,8 @@ const mapBookmark = x => {
 const getBookmarksFor = id => {
   return new Promise(resolve => chrome.bookmarks.getSubTree(id, resolve))
     .then(xs => xs[0])
-    .then(convertToBookmarkIO);
+    .then(convertToBookmarkIO)
+    .catch(err => Promise.reject(err || "Sorry! Something went wrong retrieving bookmarks from Chrome"));
 }
 
 const insertBookmark = (parentId, { title, url }) => {
@@ -46,7 +47,7 @@ const parseJsonPromise = json => {
         try {
             resolve(JSON.parse(json));
         } catch (err) {
-            reject(`Uh oh, something couldn't parse in your JSON:<br/>${err}`);
+            reject(`${err}`);
         }
     });
 };
@@ -54,7 +55,8 @@ const parseJsonPromise = json => {
 const insertBookmarksFromJson = (parentId, json) => {
   return parseJsonPromise(json)
       .then(data => insertBookmarks(parentId, data))
-      .then(() => getBookmarksFor(parentId));
+      .then(() => getBookmarksFor(parentId))
+      .catch(err => Promise.reject(err || "Sorry! Something went wrong trying to create your bookmarks"));
 };
 
 export default {

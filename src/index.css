@@ -5,15 +5,11 @@
 }
 
 .error-message {
-    display: none;
+    display: flex;
     align-items: flex-start;
     padding: 10px;
     background-color: #fd4545;
     color: #fff;
-}
-
-.error-message.is-shown {
-    display: flex;
 }
 
 .error-message-text {
