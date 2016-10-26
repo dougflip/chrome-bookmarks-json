@@ -1,56 +1,91 @@
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  font-family: Helvetica;
+}
+
+.btn {
+  font-size: 16px;
+  color: #333;
+  background-color: #fff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px #ccc solid;
+  cursor: pointer;
+
+  transition: .25s background-color;
+}
+
+.btn:hover {
+  background-color: #efefef;
+}
+
 .wrapper {
-    max-width: 760px;
-    margin: 0 auto;
-    font-size: 18px;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 10px;
+  font-size: 20px;
 }
 
 .error-message {
-    display: flex;
-    align-items: flex-start;
-    padding: 10px;
-    background-color: #fd4545;
-    color: #fff;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 5px;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #fd4545;
+  color: #fff;
 }
 
 .error-message-text {
-    flex-grow: 1;
-    margin-right: 15px;
+  flex-grow: 1;
+  margin-right: 15px;
 }
 
 .error-message-close {
-    padding: 0;
-    line-height: 1;
-    border: none;
-    background-color: transparent;
-    color: #fff;
-    font-size: 1.5rem;
-    cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  border: none;
+  background-color: transparent;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
 }
 
 .instructions {
-    padding: 5px;
-    background-color: #ddd;
+  padding: 5px;
+  background-color: #ddd;
 }
 
 .back-button {
-    margin-bottom: 5px;
+  margin-bottom: 5px;
 }
 
 .bookmarks {
-    margin: 5px 0 15px 0;
+  margin: 5px 0 15px 0;
 }
 
 .is-dir {
-    color: #00F;
-    cursor: pointer;
+  color: #00F;
+  cursor: pointer;
 }
 
 .is-link {
-    color: #999;
+  color: #999;
 }
 
 .json-textarea {
-    display: block;
-    width: 100%;
-    margin-bottom: 5px;
+  display: block;
+  width: 100%;
+  height: 75px;
+  margin-bottom: 5px;
 }

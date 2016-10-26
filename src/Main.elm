@@ -61,8 +61,8 @@ update msg model =
         BookmarkResult bookmarkIO ->
             ( { model | currentItem = bookmarkIO }, Cmd.none )
 
-        InsertBookmarks x ->
-            ( model, insertBookmarks x )
+        InsertBookmarks insertBookmarkIO ->
+            ( model, insertBookmarks insertBookmarkIO )
 
         JSError errText ->
             ( { model | errorText = errText }, Cmd.none )
@@ -98,7 +98,7 @@ view model =
     div [ class "wrapper" ]
         [ viewErrorOrEmpty model
         , viewBackButtonOrEmpty model
-        , div [] (List.map viewBookmark model.currentItem.children)
+        , div [ class "bookmarks" ] (List.map viewBookmark model.currentItem.children)
         , viewJsonPasteOrEmpty model
         ]
 
@@ -122,8 +122,8 @@ viewJsonPasteOrEmpty model =
 
         otherwise ->
             div [ class "json-paste-wrapper" ]
-                [ textarea [ class "json-textarea", onInput InputJson, value model.jsonText ] []
-                , button [ onClick (InsertBookmarks (getInsertBookmarkIOFor model)) ] [ text "add" ]
+                [ textarea [ class "json-textarea", placeholder "Type or paste JSON text here", onInput InputJson, value model.jsonText ] []
+                , button [ class "btn", onClick (InsertBookmarks (getInsertBookmarkIOFor model)) ] [ text "add" ]
                 ]
 
 
@@ -134,7 +134,7 @@ viewBackButtonOrEmpty model =
             text ""
 
         Just parentId ->
-            button [ class "back-button", onClick (FetchBookmarks parentId) ] [ text "< Back" ]
+            button [ class "btn back-button", onClick (FetchBookmarks parentId) ] [ text "< Back" ]
 
 
 viewBookmark : Bookmark -> Html Msg
