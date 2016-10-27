@@ -24,38 +24,28 @@ const getBookmarksFor = id => {
 }
 
 const insertBookmark = (parentId, { title, url }) => {
-    return new Promise(resolve => chrome.bookmarks.create({ parentId, title, url }, resolve));
+  return new Promise(resolve => chrome.bookmarks.create({ parentId, title, url }, resolve));
 };
 
 const insertBookmarks = (parentId, links) => {
-    if(!links || links.length === 0) {
-        return Promise.resolve(null);
-    }
+  if(!links || links.length === 0) {
+    return Promise.resolve(null);
+  }
 
-    const head = links[0];
-    const tail = links.slice(1);
+  const head = links[0];
+  const tail = links.slice(1);
 
-    // create the current link, and then recurse its children, and then recurse the tail
-    return insertBookmark(parentId, head)
-        .then(({ id }) => insertBookmarks(id, head.children))
-        .then(() => insertBookmarks(parentId, tail));
-};
-
-// TODO: This is a great candidate to move into Elm land!
-const parseJsonPromise = json => {
-    return new Promise((resolve, reject) => {
-        try {
-            resolve(JSON.parse(json));
-        } catch (err) {
-            reject(`${err}`);
-        }
-    });
+  // create the current link, and then recurse its children, and then recurse the tail
+  return insertBookmark(parentId, head)
+    .then(({ id }) => insertBookmarks(id, head.children))
+    .then(() => insertBookmarks(parentId, tail));
 };
 
 const insertBookmarksFromJson = (parentId, json) => {
-  return parseJsonPromise(json)
-      .then(data => insertBookmarks(parentId, data))
-      .catch(err => Promise.reject(err || "Sorry! Something went wrong trying to create your bookmarks"));
+  return Promise.resolve(json)
+    .then(JSON.parse)
+    .then(data => insertBookmarks(parentId, data))
+    .catch(err => Promise.reject(err || "Sorry! Something went wrong trying to create your bookmarks"));
 };
 
 export default {

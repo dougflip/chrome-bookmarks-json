@@ -3,7 +3,7 @@ import chromeBookmarks from './chrome-bookmarks-api';
 const node = document.getElementById('main');
 const app = Elm.Main.embed(node);
 
-const sendErrorToElm = app => err => app.ports.reportJSError.send(err);
+const sendErrorToElm = app => err => app.ports.reportJSError.send((err || {}).toString());
 
 const sendBookmarksToElm = id => {
   return chromeBookmarks.getBookmarksFor(id)
