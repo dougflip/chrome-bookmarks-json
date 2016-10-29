@@ -14,13 +14,19 @@ This extension is general purpose though and could be used to just share "chunks
 ## Required Software
 
 1. Install latest stable Node - [nvm](https://github.com/creationix/nvm) is good for this.
-1. `npm install -g elm` - install Elm
+1. `npm install -g elm` - install Elm (0.17)
 
 ## Building
 
 ```
 npm install
 npm run build
+```
+
+For development you can alternatively use
+
+```
+npm run watch
 ```
 
 ## Installing (as Chrome extension)
