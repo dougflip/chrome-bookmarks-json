@@ -94,4 +94,6 @@ html, body {
   width: 100%;
   height: 75px;
   margin-bottom: 5px;
+  padding: 6px 12px;
+  border-radius: 4px;
 }

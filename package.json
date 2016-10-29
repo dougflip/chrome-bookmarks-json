@@ -6,10 +6,15 @@
   "scripts": {
     "postinstall": "mkdir -p dist",
     "build": "run-p build:*",
+    "watch": "run-p watch:*",
     "build:css": "cp src/*.css dist/",
+    "watch:css": "onchange -i src/**/*.css -- npm run build:css",
     "build:elm": "elm make src/Main.elm --output=dist/bundle.elm.js",
+    "watch:elm": "onchange -i src/**/*.elm -- npm run build:elm",
     "build:html": "cp src/*.html dist/",
-    "build:js": "webpack && cp src/background.js dist/"
+    "watch:html": "onchange -i src/**/*.html -- npm run build:html",
+    "build:js": "webpack && cp src/background.js dist/",
+    "watch:js": "onchange -i src/**/*.js -- npm run build:js"
   },
   "repository": {
     "type": "git",
@@ -29,8 +34,7 @@
     "webpack": "^1.13.2"
   },
   "devDependencies": {
-    "onchange": "^2.5.0",
-    "watch": "^0.19.2"
+    "onchange": "^2.5.0"
   },
   "homepage": "https://github.com/dougflip/chrome-bookmarks-json#readme"
 }
