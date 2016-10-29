@@ -96,11 +96,20 @@ getInsertBookmarkIOFor model =
 view : Model -> Html Msg
 view model =
     div [ class "wrapper" ]
-        [ viewErrorOrEmpty model
+        [ viewInstructionsOrEmpty model
+        , viewErrorOrEmpty model
         , viewBackButtonOrEmpty model
         , div [ class "bookmarks" ] (List.map viewBookmark model.currentItem.children)
         , viewJsonPasteOrEmpty model
         ]
+
+
+viewInstructionsOrEmpty : Model -> Html Msg
+viewInstructionsOrEmpty model =
+    if model.currentItem.currentRootId == "0" then
+        div [ class "instructions" ] [ text "Navigate to a folder and then add your JSON to create your bookmarks." ]
+    else
+        text ""
 
 
 viewErrorOrEmpty : Model -> Html Msg
@@ -114,6 +123,16 @@ viewErrorOrEmpty model =
             ]
 
 
+viewBackButtonOrEmpty : Model -> Html Msg
+viewBackButtonOrEmpty model =
+    case model.currentItem.parentId of
+        Nothing ->
+            text ""
+
+        Just parentId ->
+            button [ class "btn back-button", onClick (FetchBookmarks parentId) ] [ text "< Back" ]
+
+
 viewJsonPasteOrEmpty : Model -> Html Msg
 viewJsonPasteOrEmpty model =
     case model.currentItem.currentRootId of
@@ -123,18 +142,21 @@ viewJsonPasteOrEmpty model =
         otherwise ->
             div [ class "json-paste-wrapper" ]
                 [ textarea [ class "json-textarea", placeholder "Type or paste JSON text here", onInput InputJson, value model.jsonText ] []
-                , button [ class "btn", onClick (InsertBookmarks (getInsertBookmarkIOFor model)) ] [ text "add" ]
+                , if String.isEmpty model.jsonText then
+                    viewAddButtonDisabled model
+                  else
+                    viewAddButton model
                 ]
 
 
-viewBackButtonOrEmpty : Model -> Html Msg
-viewBackButtonOrEmpty model =
-    case model.currentItem.parentId of
-        Nothing ->
-            text ""
+viewAddButton : Model -> Html Msg
+viewAddButton model =
+    button [ class "btn", onClick (InsertBookmarks (getInsertBookmarkIOFor model)) ] [ text "add" ]
 
-        Just parentId ->
-            button [ class "btn back-button", onClick (FetchBookmarks parentId) ] [ text "< Back" ]
+
+viewAddButtonDisabled : Model -> Html Msg
+viewAddButtonDisabled model =
+    button [ class "btn", disabled True ] [ text "add" ]
 
 
 viewBookmark : Bookmark -> Html Msg
