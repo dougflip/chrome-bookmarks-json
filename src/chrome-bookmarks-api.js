@@ -21,10 +21,15 @@ const getBookmarksFor = id => {
     .then(xs => xs[0])
     .then(convertToBookmarkIO)
     .catch(err => Promise.reject(err || "Sorry! Something went wrong retrieving bookmarks from Chrome"));
-}
+};
 
 const insertBookmark = (parentId, { title, url }) => {
-  return new Promise(resolve => chrome.bookmarks.create({ parentId, title, url }, resolve));
+  return new Promise((resolve, reject) => chrome.bookmarks.create({ parentId, title, url }, x => {
+    const lastError = chrome.runtime.lastError;
+    return lastError
+      ? reject(`The bookmark with title, "${title}", caused an error: ${lastError.message}`)
+      : resolve(x);
+  }));
 };
 
 const insertBookmarks = (parentId, links) => {
