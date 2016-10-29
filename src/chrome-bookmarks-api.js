@@ -7,6 +7,7 @@
 const convertToBookmarkIO = node => {
   return {
     parentId: node.parentId || null,
+    title: node.title || "",
     currentRootId: node.id,
     children: node.children.map(mapBookmark)
   };

@@ -72,8 +72,19 @@ html, body {
   background-color: #ddd;
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
 .back-button {
-  margin-bottom: 5px;
+  margin-right: 10px;
+}
+
+.current-item-title {
+  font-style: italic;
 }
 
 .bookmarks {

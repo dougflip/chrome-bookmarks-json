@@ -18,7 +18,7 @@ main =
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model "" (BookmarkIO Nothing "0" []) "", Cmd.none )
+    ( Model "" (BookmarkIO Nothing "0" "" []) "", Cmd.none )
 
 
 type alias Bookmark =
@@ -26,7 +26,7 @@ type alias Bookmark =
 
 
 type alias BookmarkIO =
-    { parentId : Maybe String, currentRootId : String, children : List Bookmark }
+    { parentId : Maybe String, currentRootId : String, title: String, children : List Bookmark }
 
 
 type alias InsertBookmarkIO =
@@ -107,7 +107,7 @@ view model =
 viewInstructionsOrEmpty : Model -> Html Msg
 viewInstructionsOrEmpty model =
     if model.currentItem.currentRootId == "0" then
-        div [ class "instructions" ] [ text "Navigate to a folder and then add your JSON to create your bookmarks." ]
+        div [ class "instructions" ] [ text "Navigate to a folder and then create create bookmarks via JSON." ]
     else
         text ""
 
@@ -130,7 +130,10 @@ viewBackButtonOrEmpty model =
             text ""
 
         Just parentId ->
-            button [ class "btn back-button", onClick (FetchBookmarks parentId) ] [ text "< Back" ]
+            div [class "header"]
+              [ button [ class "btn back-button", onClick (FetchBookmarks parentId) ][ text "< Back" ],
+                div [class "current-item-title"] [text model.currentItem.title]
+              ]
 
 
 viewJsonPasteOrEmpty : Model -> Html Msg
