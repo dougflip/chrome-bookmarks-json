@@ -4,6 +4,7 @@ import Html exposing (..)
 import Html.App as App
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
+import ElmEscapeHtml exposing (..)
 import String exposing (..)
 
 
@@ -119,7 +120,7 @@ viewErrorOrEmpty model =
     else
         div [ class "error-message" ]
             [ div [ class "error-message-text" ] [ text model.errorText ]
-            , div [ class "error-message-close", onClick CloseError ] [ text "X" ]
+            , div [ class "error-message-close", onClick CloseError ] [ text <| unescape "&times;" ]
             ]
 
 
