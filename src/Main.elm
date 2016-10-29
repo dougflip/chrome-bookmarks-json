@@ -142,21 +142,13 @@ viewJsonPasteOrEmpty model =
         otherwise ->
             div [ class "json-paste-wrapper" ]
                 [ textarea [ class "json-textarea", placeholder "Type or paste JSON text here", onInput InputJson, value model.jsonText ] []
-                , if String.isEmpty model.jsonText then
-                    viewAddButtonDisabled model
-                  else
-                    viewAddButton model
+                , viewAddButton model
                 ]
 
 
 viewAddButton : Model -> Html Msg
 viewAddButton model =
-    button [ class "btn", onClick (InsertBookmarks (getInsertBookmarkIOFor model)) ] [ text "add" ]
-
-
-viewAddButtonDisabled : Model -> Html Msg
-viewAddButtonDisabled model =
-    button [ class "btn", disabled True ] [ text "add" ]
+    button [ class "btn", disabled <| String.isEmpty model.jsonText, onClick (InsertBookmarks <| getInsertBookmarkIOFor model) ] [ text "add" ]
 
 
 viewBookmark : Bookmark -> Html Msg
