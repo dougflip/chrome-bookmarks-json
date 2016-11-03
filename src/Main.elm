@@ -1,5 +1,6 @@
-port module Main exposing (..)
+module Main exposing (..)
 
+import BookmarkPorts exposing (..)
 import Html exposing (..)
 import Html.App as App
 import Html.Attributes exposing (..)
@@ -20,18 +21,6 @@ main =
 init : ( Model, Cmd Msg )
 init =
     ( Model "" (BookmarkIO Nothing "0" "" []) "", Cmd.none )
-
-
-type alias Bookmark =
-    { id : String, title : String, isFolder : Bool }
-
-
-type alias BookmarkIO =
-    { parentId : Maybe String, currentRootId : String, title: String, children : List Bookmark }
-
-
-type alias InsertBookmarkIO =
-    { parentId : String, json : String }
 
 
 type alias Model =
@@ -70,18 +59,6 @@ update msg model =
 
         CloseError ->
             ( { model | errorText = "" }, Cmd.none )
-
-
-port getBookmarks : String -> Cmd msg
-
-
-port insertBookmarks : InsertBookmarkIO -> Cmd msg
-
-
-port bookmarks : (BookmarkIO -> msg) -> Sub msg
-
-
-port reportJSError : (String -> msg) -> Sub msg
 
 
 subscriptions : Model -> Sub Msg
@@ -131,10 +108,10 @@ viewBackButtonOrEmpty model =
             text ""
 
         Just parentId ->
-            div [class "header"]
-              [ button [ class "btn back-button", onClick (FetchBookmarks parentId) ][ text "< Back" ],
-                div [class "current-item-title"] [text model.currentItem.title]
-              ]
+            div [ class "header" ]
+                [ button [ class "btn back-button", onClick (FetchBookmarks parentId) ] [ text "< Back" ]
+                , div [ class "current-item-title" ] [ text model.currentItem.title ]
+                ]
 
 
 viewJsonPasteOrEmpty : Model -> Html Msg
