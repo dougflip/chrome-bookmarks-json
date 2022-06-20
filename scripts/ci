@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+CMD="$*"
+
+if [ -z "$CMD" ]; then
+ echo "You must provide a command, for example: ./scripts/ci npm run test:ci"
+fi
+
+echo "Building a development Docker image"
+docker build -t chrome-bookmarks-json-ci .
+
+echo "Running ${CMD} in chrome-bookmarks-json-ci container"
+docker run --rm \
+    -v /app/node_modules \
+    -v "$(pwd)":/app \
+    chrome-bookmarks-json-ci \
+    $CMD

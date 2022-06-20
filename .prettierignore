@@ -1,0 +1,7 @@
+.cache
+.github
+dist
+node_modules
+.nvmrc
+.prettierignore
+package-lock.json

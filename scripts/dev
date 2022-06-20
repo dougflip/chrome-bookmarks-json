@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+echo "Building a development Docker image"
+docker build -t chrome-bookmarks-json-local-dev .
+
+[[ $# -eq 0 ]] && cmd="bash" || cmd="$@"
+echo "Running ${cmd} in the development container"
+docker run --rm -it \
+    -v /app/node_modules \
+    -v "$(pwd)":/app \
+    -p 3000:3000 \
+    chrome-bookmarks-json-local-dev \
+    $cmd
