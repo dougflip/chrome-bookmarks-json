@@ -76,5 +76,5 @@ using NVM.
 
 ## TODO
 
-[ ] Use Zod to validate user provided JSON
-[ ] Build for browsers other than Chrome
+* [ ] Use Zod to validate user provided JSON
+* [ ] Build for browsers other than Chrome
