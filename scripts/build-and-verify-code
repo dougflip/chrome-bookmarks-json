@@ -7,6 +7,9 @@
 
 set -e
 
+echo "What is on the filesystem???"
+ls -lah
+
 echo "Linting the code"
 npm run lint
 
