@@ -13,7 +13,7 @@ docker build -t chrome-bookmarks-json-ci .
 
 echo "Running ${CMD} in chrome-bookmarks-json-ci container"
 docker run --rm \
-    -v /app/node_modules \
-    -v "$(pwd)":/app \
+    -v /home/node/app/node_modules \
+    -v "$(pwd)":/home/node/app \
     chrome-bookmarks-json-ci \
     $CMD

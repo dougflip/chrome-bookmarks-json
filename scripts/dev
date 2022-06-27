@@ -8,8 +8,8 @@ docker build -t chrome-bookmarks-json-local-dev .
 [[ $# -eq 0 ]] && cmd="bash" || cmd="$@"
 echo "Running ${cmd} in the development container"
 docker run --rm -it \
-    -v /app/node_modules \
-    -v "$(pwd)":/app \
+    -v /home/node/app/node_modules \
+    -v "$(pwd)":/home/node/app \
     -p 3000:3000 \
     chrome-bookmarks-json-local-dev \
     $cmd

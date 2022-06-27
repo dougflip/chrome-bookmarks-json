@@ -1,9 +1,15 @@
 FROM node:16.15.0-buster
 
-WORKDIR /app
+# https://www.digitalocean.com/community/tutorials/how-to-build-a-node-js-application-with-docker
+RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 
-COPY package-lock.json ./package-lock.json
-COPY package.json ./package.json
+WORKDIR /home/node/app
+
+COPY package*.json ./
+
+RUN chown -R node:node ./package*.json
+
+USER node
 
 RUN npm install
 
